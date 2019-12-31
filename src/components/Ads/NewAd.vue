@@ -80,10 +80,11 @@ export default {
         const ad = {
           title: this.title,
           description: this.description,
-          promo: this.promo
+          promo: this.promo,
+          imageSrc: 'https://snob.ru/i/indoc/user_30206/1dc355d404104782f8f720fb63b16920.jpg'
         }
 
-        console.log(ad)
+        this.$store.dispatch('createAd', ad)
       }
     }
   }
