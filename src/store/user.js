@@ -1,17 +1,38 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import ads from './ads'
+import * as fb from 'firebase'
 
-Vue.use(Vuex)
+class User {
+  constructor (id) {
+    this.id = id
+  }
+}
 
-export default new Vuex.Store({
+export default {
   state: {
+    user: null
   },
   mutations: {
+    setUser (state, payload) {
+      state.user = payload
+    }
   },
   actions: {
+    async registerUser ({ commit }, { email, password }) {
+      commit('clearError')
+      commit('setLoading', true)
+      try {
+        const user = await fb.auth().createUserWithEmailAndPassword(email, password)
+        commit('setUser', new User(user.uid))
+        commit('setLoading', false)
+      } catch (error) {
+        commit('setLoading', false)
+        commit('setUser', error.message)
+        throw error
+      }
+    }
   },
-  modules: {
-    ads
+  getters: {
+    user (state) {
+      return state.user
+    }
   }
-})
+}
