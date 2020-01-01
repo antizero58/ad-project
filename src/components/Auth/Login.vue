@@ -27,7 +27,7 @@
               validation
             >
               <v-text-field
-                label="email"
+                label="Email"
                 name="email"
                 prepend-icon="person"
                 type="email"
@@ -96,7 +96,7 @@ export default {
           .then(() => {
             this.$router.push('/')
           })
-          .catch(err => console.log(err))
+          .catch(() => {})
       }
     }
   }

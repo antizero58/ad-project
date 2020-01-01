@@ -25,7 +25,7 @@ export default {
         commit('setLoading', false)
       } catch (error) {
         commit('setLoading', false)
-        commit('setUser', error.message)
+        commit('setError', error.message)
         throw error
       }
     },
@@ -38,7 +38,7 @@ export default {
         commit('setLoading', false)
       } catch (error) {
         commit('setLoading', false)
-        commit('setUser', error.message)
+        commit('setError', error.message)
         throw error
       }
     }
