@@ -1,3 +1,16 @@
+import * as fb from 'firebase'
+
+class Ad {
+  constructor (title, description, ownerId, imageSrc = '', promo = false, id = null) {
+    this.title = title
+    this.description = description
+    this.ownerId = ownerId
+    this.imageSrc = imageSrc
+    this.promo = promo
+    this.id = id
+  }
+}
+
 /**
  * Returns a random integer between min (inclusive) and max (inclusive).
  * The value is no lower than min (or the next integer greater than min
@@ -5,11 +18,11 @@
  * lower than max if max isn't an integer).
  * Using Math.round() will give you a non-uniform distribution!
  */
-function getRandomInt (min, max) {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
+// function getRandomInt (min, max) {
+//   min = Math.ceil(min)
+//   max = Math.floor(max)
+//   return Math.floor(Math.random() * (max - min + 1)) + min
+// }
 
 export default {
   state: {
@@ -43,10 +56,31 @@ export default {
     }
   },
   actions: {
-    createAd ({ commit }, payload) {
-      payload.id = getRandomInt(1, 99999).toString()
+    async createAd ({ commit, getters }, payload) {
+      commit('clearError')
+      commit('setLoading', true)
 
-      commit('createAd', payload)
+      try {
+        const newAd = new Ad(
+          payload.title,
+          payload.description,
+          getters.user.id,
+          payload.imageSrc,
+          payload.promo
+        )
+
+        const ad = await fb.database().ref('ads').push(newAd)
+
+        commit('setLoading', false)
+        commit('createAd', {
+          ...newAd,
+          id: ad.key
+        })
+      } catch (error) {
+        commit('setError', error.message)
+        commit('setLoading', false)
+        throw error
+      }
     }
   },
   getters: {

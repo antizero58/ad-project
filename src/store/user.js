@@ -3,6 +3,7 @@ import * as fb from 'firebase'
 class User {
   constructor (id) {
     this.id = id
+    console.log(this.id)
   }
 }
 
@@ -30,11 +31,17 @@ export default {
       }
     },
     async loginUser ({ commit }, { email, password }) {
+      // Если уже залогинены, то на выход
+      // if (user) {
+      //   return
+      // }
       commit('clearError')
       commit('setLoading', true)
       try {
+        // eslint-disable-next-line no-unused-vars
         const user = await fb.auth().signInWithEmailAndPassword(email, password)
-        commit('setUser', new User(user.uid))
+        // let localUser = new User(user.uid)
+        // commit('setUser', localUser)
         commit('setLoading', false)
       } catch (error) {
         commit('setLoading', false)
@@ -52,6 +59,7 @@ export default {
   },
   getters: {
     user (state) {
+      console.log(state.user)
       return state.user
     },
     isUserLoggedIn (state) {
