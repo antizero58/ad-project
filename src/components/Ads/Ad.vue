@@ -5,7 +5,7 @@
         <v-card>
           <v-img
             :src="ad.imageSrc"
-            height="300px"
+            height="400px"
           ></v-img>
           <v-card-text>
             <h1 class="text--primary">{{ad.title}}</h1>
