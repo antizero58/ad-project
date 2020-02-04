@@ -1,8 +1,9 @@
 import * as fb from 'firebase'
 
 class User {
-  constructor (id) {
+  constructor (id, email) {
     this.id = id
+    this.email = email
     console.log(this.id)
   }
 }
@@ -50,7 +51,7 @@ export default {
       }
     },
     autoLoginUser ({ commit }, payload) {
-      commit('setUser', new User(payload.uid))
+      commit('setUser', new User(payload.uid, payload.email))
     },
     logoutUser ({ commit }) {
       fb.auth().signOut()

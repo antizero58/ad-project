@@ -92,14 +92,16 @@ export default {
         const fbVal = await fb.database().ref('ads').once('value')
         const ads = fbVal.val()
 
-        Object.keys(ads).forEach(key => {
-          const ad = ads[key]
-          // if (getters.user.id === ad.ownerId) {
-          resultAds.push(
-            new Ad(ad.title, ad.description, ad.ownerId, ad.imageSrc, ad.promo, key)
-          )
-          // }
-        })
+        if (ads !== null) {
+          Object.keys(ads).forEach(key => {
+            const ad = ads[key]
+            // if (getters.user.id === ad.ownerId) {
+            resultAds.push(
+              new Ad(ad.title, ad.description, ad.ownerId, ad.imageSrc, ad.promo, key)
+            )
+            // }
+          })
+        }
 
         commit('loadAds', resultAds)
         commit('setLoading', false)

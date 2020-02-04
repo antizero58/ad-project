@@ -14,10 +14,10 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="title">
-              Application
+              Ad application
             </v-list-item-title>
-            <v-list-item-subtitle>
-              subtext
+            <v-list-item-subtitle v-if="isUserLoggedIn">
+              {{user.email}}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -88,6 +88,9 @@
         <v-icon left>exit_to_app</v-icon>
         Logout
       </v-btn>
+      <v-list-item-action-text v-if="isUserLoggedIn">
+        {{user.email}}
+      </v-list-item-action-text>
       <v-menu left bottom>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
@@ -152,6 +155,9 @@ export default {
     isUserLoggedIn () {
       return this.$store.getters.isUserLoggedIn
     },
+    user () {
+      return this.$store.getters.user
+    },
     links () {
       if (this.isUserLoggedIn) {
         return [
@@ -172,7 +178,10 @@ export default {
     },
     onLogout () {
       this.$store.dispatch('logoutUser')
-      this.$router.push('/')
+      console.log(this.$router.currentRoute)
+      if (this.$router.currentRoute.name !== 'home') {
+        this.$router.push('/')
+      }
     }
   }
 }
